@@ -1,5 +1,6 @@
 var querystring = require('querystring')
-var iso8601 = require('./lib/iso8601-regex')
+var iso8601 = /^\d{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?(T([01][0-9]|2[0-3]):[0-5]\d(:[0-5]\d(\.\d+)?)?(Z|[+-]\d{2}:\d{2}))?$/
+
 
 // Convert comma separated list to a mongo projection.
 // for example f('field1,field2,field3') -> {field1:true,field2:true,field3:true}
@@ -111,7 +112,7 @@ function comparisonToMongo(key, value) {
                 { '$ne': array[0] }
         } else if (array[0][0] == '!') {
             var sValue = array[0].substr(1)
-            var regex = sValue.match(/^\/(.*)\/(i?)$/) 
+            var regex = sValue.match(/^\/(.*)\/(i?)$/)
             value = regex ?
                 { '$not': new RegExp(regex[1], regex[2]) } :
                 { '$ne': sValue }
